@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                         Todo updatingTodo = items.get(position);
                         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
                         i.putExtra("Todo", updatingTodo);
+                        // I really don't like just passing this between the activities.
+                        // There has to be a way to pass this straight into onActivityResult
                         i.putExtra("Position", position);
                         startActivityForResult(i, REQUEST_CODE); // brings up the second activity
                     }
@@ -77,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             etNewItem.setText("");
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

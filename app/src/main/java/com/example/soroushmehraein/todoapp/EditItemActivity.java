@@ -20,6 +20,7 @@ public class EditItemActivity extends AppCompatActivity {
         todo = (Todo) getIntent().getSerializableExtra("Todo");
         position = getIntent().getIntExtra("Position", 0);
         etEditTodo.setText(todo.title);
+        etEditTodo.setSelection(todo.title.length());
     }
 
     public void onUpdateTodo(View view) {
