@@ -5,4 +5,10 @@ package com.example.soroushmehraein.todoapp;
  */
 public class Todo {
     public String title;
+    public int id;
+
+    public Todo(int id, String title) {
+        id = id;
+        title = title;
+    }
 }
