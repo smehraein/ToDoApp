@@ -13,6 +13,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int RESULT_OK = 200;
+    public static final int REQUEST_CODE = 200;
+
     ArrayList<Todo> items;
     ArrayAdapter<Todo> itemsAdapter;
     ListView lvItems;
@@ -52,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Todo updatingTodo = items.get(position);
-                        launchEditView(updatingTodo);
+                        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+                        i.putExtra("Todo", updatingTodo);
+                        i.putExtra("Position", position);
+                        startActivityForResult(i, REQUEST_CODE); // brings up the second activity
                     }
                 }
         );
@@ -72,10 +78,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void launchEditView(Todo todo) {
-        // first parameter is the context, second is the class of the activity to launch
-        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-        i.putExtra("Todo", todo);
-        startActivity(i); // brings up the second activity
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Todo todo = (Todo) data.getSerializableExtra("Todo");
+            int position = data.getIntExtra("Position", 0);
+            TodoDatabaseHelper db = TodoDatabaseHelper.getInstance(this);
+            db.updateTodo(todo);
+            items.set(position, todo);
+            itemsAdapter.notifyDataSetChanged();
+        }
     }
 }

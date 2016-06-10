@@ -12,7 +12,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:text="@string/update_todo"
+        android:onClick="onUpdateTodo"
         android:id="@+id/btnSaveEdit"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
