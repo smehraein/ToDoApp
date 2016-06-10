@@ -17,7 +17,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "TodoDatabaseHelper";
     // Database Info
     private static final String DATABASE_NAME = "todoDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // Table Name
     private static final String TABLE_TODOS = "todos";
@@ -43,8 +43,8 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TODOS_TABLE = "CREATE TABLE " + TABLE_TODOS +
                 "(" +
-                KEY_TODO_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_TODO_TITLE + " TEXT" +
+                KEY_TODO_ID + " TEXT PRIMARY KEY," + // Define a primary key
+                KEY_TODO_TITLE + " TEXT," +
                 KEY_TODO_POSITION + " INTEGER" +
                 ")";
 
@@ -81,6 +81,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_TODO_TITLE, todo.title);
             values.put(KEY_TODO_POSITION, todo.position);
+            values.put(KEY_TODO_ID, todo.getId());
             db.insertOrThrow(TABLE_TODOS, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -103,7 +104,8 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     String title = cursor.getString(cursor.getColumnIndex(KEY_TODO_TITLE));
                     int position = cursor.getInt(cursor.getColumnIndex(KEY_TODO_POSITION));
-                    Todo newTodo = new Todo(title, position);
+                    String id = cursor.getString(cursor.getColumnIndex(KEY_TODO_ID));
+                    Todo newTodo = new Todo(title, position, id);
                     todos.add(newTodo);
                 } while(cursor.moveToNext());
             }
@@ -122,15 +124,16 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TODO_TITLE, todo.title);
+        values.put(KEY_TODO_POSITION, todo.position);
 
-        return db.update(TABLE_TODOS, values, KEY_TODO_POSITION + " = ?",
-                new String[] { String.valueOf(todo.position) });
+        return db.update(TABLE_TODOS, values, KEY_TODO_ID + " = ?",
+                new String[] { String.valueOf(todo.getId()) });
     }
 
     public int deleteTodo(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_TODOS, KEY_TODO_POSITION + " = ?",
-                new String[] { String.valueOf(todo.position) });
+        return db.delete(TABLE_TODOS, KEY_TODO_ID + " = ?",
+                new String[] { String.valueOf(todo.getId()) });
     }
 }

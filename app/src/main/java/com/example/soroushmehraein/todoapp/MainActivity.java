@@ -1,5 +1,6 @@
 package com.example.soroushmehraein.todoapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,13 +33,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewListener() {
+        final Context savedContext = this;
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        items.remove(position);
+                        Todo removedTodo = items.remove(position);
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+                        TodoDatabaseHelper db = TodoDatabaseHelper.getInstance(savedContext);
+                        db.deleteTodo(removedTodo);
                         return true;
                     }
                 }
@@ -53,11 +56,9 @@ public class MainActivity extends AppCompatActivity {
             int itemPosition = items.size();
             Todo newTodo = new Todo(itemText, itemPosition);
             itemsAdapter.add(newTodo);
-            writeItems();
+            TodoDatabaseHelper db = TodoDatabaseHelper.getInstance(this);
+            db.addTodo(newTodo);
             etNewItem.setText("");
         }
-    }
-
-    private void writeItems() {
     }
 }
