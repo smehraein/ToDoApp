@@ -25,6 +25,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
     // Todo Table Columns
     private static final String KEY_TODO_ID = "id";
     private static final String KEY_TODO_TITLE = "title";
+    private static final String KEY_TODO_POSITION = "position";
 
     // Singleton Instance
     private static TodoDatabaseHelper ourInstance;
@@ -44,6 +45,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
                 "(" +
                 KEY_TODO_ID + " INTEGER PRIMARY KEY," + // Define a primary key
                 KEY_TODO_TITLE + " TEXT" +
+                KEY_TODO_POSITION + " INTEGER" +
                 ")";
 
         db.execSQL(CREATE_TODOS_TABLE);
@@ -78,6 +80,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_TODO_TITLE, todo.title);
+            values.put(KEY_TODO_POSITION, todo.position);
             db.insertOrThrow(TABLE_TODOS, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -98,9 +101,9 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    int id = cursor.getInt(cursor.getColumnIndex(KEY_TODO_ID));
                     String title = cursor.getString(cursor.getColumnIndex(KEY_TODO_TITLE));
-                    Todo newTodo = new Todo(id, title);
+                    int position = cursor.getInt(cursor.getColumnIndex(KEY_TODO_POSITION));
+                    Todo newTodo = new Todo(title, position);
                     todos.add(newTodo);
                 } while(cursor.moveToNext());
             }
@@ -120,14 +123,14 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_TODO_TITLE, todo.title);
 
-        return db.update(TABLE_TODOS, values, KEY_TODO_ID + " = ?",
-                new String[] { String.valueOf(todo.id) });
+        return db.update(TABLE_TODOS, values, KEY_TODO_POSITION + " = ?",
+                new String[] { String.valueOf(todo.position) });
     }
 
     public int deleteTodo(Todo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(TABLE_TODOS, KEY_TODO_ID + " = ?",
-                new String[] { String.valueOf(todo.id) });
+        return db.delete(TABLE_TODOS, KEY_TODO_POSITION + " = ?",
+                new String[] { String.valueOf(todo.position) });
     }
 }

@@ -5,10 +5,15 @@ package com.example.soroushmehraein.todoapp;
  */
 public class Todo {
     public String title;
-    public int id;
+    public int position;
 
-    public Todo(int id, String title) {
-        id = id;
-        title = title;
+    public Todo(String todoTitle, int todoPosition) {
+        title = todoTitle;
+        position = todoPosition;
+    }
+
+    @Override
+    public String toString(){
+        return title;
     }
 }

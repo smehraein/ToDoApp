@@ -11,8 +11,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
+    ArrayList<Todo> items;
+    ArrayAdapter<Todo> itemsAdapter;
     ListView lvItems;
 
     @Override
@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readItems() {
-        items = new ArrayList<>();
+        TodoDatabaseHelper db = TodoDatabaseHelper.getInstance(this);
+        items = (ArrayList<Todo>) db.getAllTodos();
     }
 
     private void setupViewListener() {
@@ -49,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         assert etNewItem != null;
         String itemText = etNewItem.getText().toString();
         if (!itemText.isEmpty()) {
-            itemsAdapter.add(itemText);
+            int itemPosition = items.size();
+            Todo newTodo = new Todo(itemText, itemPosition);
+            itemsAdapter.add(newTodo);
             writeItems();
             etNewItem.setText("");
         }
