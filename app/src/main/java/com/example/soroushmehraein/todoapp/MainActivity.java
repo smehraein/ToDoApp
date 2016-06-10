@@ -1,8 +1,9 @@
 package com.example.soroushmehraein.todoapp;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+        lvItems.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Todo updatingTodo = items.get(position);
+                        launchEditView(updatingTodo);
+                    }
+                }
+        );
     }
 
     public void onAddItem(View view) {
@@ -60,5 +70,12 @@ public class MainActivity extends AppCompatActivity {
             db.addTodo(newTodo);
             etNewItem.setText("");
         }
+    }
+
+    public void launchEditView(Todo todo) {
+        // first parameter is the context, second is the class of the activity to launch
+        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+        i.putExtra("Todo", todo);
+        startActivity(i); // brings up the second activity
     }
 }

@@ -1,11 +1,13 @@
 package com.example.soroushmehraein.todoapp;
 
+import java.io.Serializable;
+
 import static java.util.UUID.randomUUID;
 
 /**
  * Created by soroushmehraein on 6/9/16.
  */
-public class Todo {
+public class Todo implements Serializable {
     public String title;
     public int position;
 
