@@ -37,7 +37,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Smooth sailing so far! Had to brush up on my Java but that's about it. I have a few questions about Android, but they weren't anything I couldn't work around.
 
 ## License
 
