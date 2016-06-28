@@ -8,6 +8,8 @@ import static java.util.UUID.randomUUID;
  * Created by soroushmehraein on 6/9/16.
  */
 public class Todo implements Serializable {
+    public static final String serializedName = "Todo";
+
     public String title;
     public int position;
 

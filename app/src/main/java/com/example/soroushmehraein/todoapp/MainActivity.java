@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Todo updatingTodo = items.get(position);
                         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
-                        i.putExtra("Todo", updatingTodo);
+                        i.putExtra(Todo.serializedName, updatingTodo);
                         // I really don't like just passing this between the activities.
                         // There has to be a way to pass this straight into onActivityResult
                         i.putExtra("Position", position);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            Todo todo = (Todo) data.getSerializableExtra("Todo");
+            Todo todo = (Todo) data.getSerializableExtra(Todo.serializedName);
             int position = data.getIntExtra("Position", 0);
             TodoDatabaseHelper db = TodoDatabaseHelper.getInstance(this);
             db.updateTodo(todo);

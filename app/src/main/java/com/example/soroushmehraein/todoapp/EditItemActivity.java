@@ -17,7 +17,7 @@ public class EditItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
         etEditTodo = (EditText) findViewById(R.id.etEditTodo);
-        todo = (Todo) getIntent().getSerializableExtra("Todo");
+        todo = (Todo) getIntent().getSerializableExtra(Todo.serializedName);
         position = getIntent().getIntExtra("Position", 0);
         etEditTodo.setText(todo.title);
         etEditTodo.setSelection(todo.title.length());
@@ -26,7 +26,7 @@ public class EditItemActivity extends AppCompatActivity {
     public void onUpdateTodo(View view) {
         todo.title = etEditTodo.getText().toString();
         Intent data = new Intent();
-        data.putExtra("Todo", todo);
+        data.putExtra(Todo.serializedName, todo);
         data.putExtra("Position", position);
         setResult(MainActivity.RESULT_OK, data);
         finish();
